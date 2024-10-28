@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Simple</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .calculadora {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        #pantalla {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            text-align: right;
+            box-sizing: border-box;
+        }
+        .botones {
+            display: flex;
+        }
+        .botones-numeros {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 5px;
+            width: 75%;
+        }
+        .botones-operadores {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 25%;
+        }
+        button {
+            padding: 15px;
+            font-size: 18px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculadora">
+        <input type="text" id="pantalla" disabled>
+        <div class="botones">
+            <div class="botones-numeros">
+                <button onclick="agregarNumero('1')">1</button>
+                <button onclick="agregarNumero('2')">2</button>
+                <button onclick="agregarNumero('3')">3</button>
+                <button onclick="agregarNumero('4')">4</button>
+                <button onclick="agregarNumero('5')">5</button>
+                <button onclick="agregarNumero('6')">6</button>
+                <button onclick="agregarNumero('7')">7</button>
+                <button onclick="agregarNumero('8')">8</button>
+                <button onclick="agregarNumero('9')">9</button>
+                <button onclick="agregarNumero('0')">0</button>
+                <button onclick="limpiarPantalla()">C</button>
+                <button onclick="calcular()">=</button>
+            </div>
+            <div class="botones-operadores">
+                <button onclick="establecerOperador('+')">+</button>
+                <button onclick="establecerOperador('-')">-</button>
+                <button onclick="establecerOperador('*')">*</button>
+                <button onclick="establecerOperador('/')">/</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let numeroActual = '';
+        let operador = '';
+        let numeroAnterior = '';
+
+        function agregarNumero(numero) {
+            numeroActual += numero;
+            actualizarPantalla();
+        }
+
+        function establecerOperador(op) {
+            if (numeroActual === '') return;
+            operador = op;
+            numeroAnterior = numeroActual;
+            numeroActual = '';
+            actualizarPantalla();
+        }
+
+        function calcular() {
+            let resultado = 0;
+            const anterior = parseFloat(numeroAnterior);
+            const actual = parseFloat(numeroActual);
+
+            if (isNaN(anterior) || isNaN(actual)) return;
+
+            if (operador === '+') resultado = anterior + actual;
+            if (operador === '-') resultado = anterior - actual;
+            if (operador === '*') resultado = anterior * actual;
+            if (operador === '/') resultado = anterior / actual;
+
+            numeroActual = resultado.toString();
+            operador = '';
+            numeroAnterior = '';
+            actualizarPantalla();
+        }
+
+        function limpiarPantalla() {
+            numeroActual = '';
+            operador = '';
+            numeroAnterior = '';
+            actualizarPantalla();
+        }
+
+        function actualizarPantalla() {
+            document.getElementById('pantalla').value = numeroActual;
+        }
+    </script>
+</body>
+</html>
